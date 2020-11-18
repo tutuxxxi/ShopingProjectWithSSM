@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTDMapper3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.linmu.dao.LoginDao">
+
+    <resultMap id="login" type="com.linmu.entity.Login">
+        <id property="id" column="id"></id>
+        <result column="user_id" property="userId"></result>
+        <result column="loginTime" property="loginDate"></result>
+        <result column="logoutTime" property="logoutDate"></result>
+    </resultMap>
+
+
+    <insert id="addLoginData">
+        <selectKey resultType="String" keyProperty="id" order="BEFORE">
+            select uuid();
+        </selectKey>
+
+        insert into login_data_tb(id, user_id, loginTime)
+        values(#{id}, #{userId}, #{loginDate})
+    </insert>
+
+    <update id="addLogoutData">
+        update login_data_tb
+        set logoutTime=#{logoutDate}
+        where id=#{id}
+    </update>
+
+</mapper>

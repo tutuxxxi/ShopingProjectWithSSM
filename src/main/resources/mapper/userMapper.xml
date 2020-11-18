@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTDMapper3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.linmu.dao.UserDao">
+
+    <resultMap id="userMap" type="com.linmu.entity.User">
+        <id column="user_id" property="uuid"></id>
+        <result column="user_name" property="username"></result>
+        <result column="user_email" property="email"></result>
+        <result column="user_password" property="password"></result>
+    </resultMap>
+
+
+    <insert id="addUser">
+        <selectKey keyProperty="uuid" order="BEFORE" resultType="String">
+            select uuid();
+        </selectKey>
+
+        insert into user_tb
+        values(#{uuid}, #{username}, #{email}, #{password});
+    </insert>
+
+    <update id="updateUser">
+        update user_tb
+        set user_name=#{username}, user_email=#{email}, user_password=#{password}
+        where id=#{uuid}
+    </update>
+
+    <update id="updateEmailById">
+        update user_tb
+        set user_email=#{email}
+        where user_id=#{uuid}
+    </update>
+
+    <update id="updateUsernameById">
+        update user_tb
+        set user_name=#{username}
+        where user_id=#{uuid}
+    </update>
+
+    <update id="updatePasswordById">
+        update user_tb
+        set user_password=#{password}
+        where user_id=#{uuid}
+    </update>
+
+    <delete id="deleteUser">
+        delete
+        from user_tb
+        where user_id=#{uuid}
+    </delete>
+
+    <select id="getUserById" resultMap="userMap">
+        select *
+        from user_tb
+        where user_id=#{uuid}
+    </select>
+
+    <select id="getUserByEmail" resultMap="userMap">
+        select *
+        from user_tb
+        where user_email=#{email}
+    </select>
+
+
+</mapper>
